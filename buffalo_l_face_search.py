@@ -2,7 +2,7 @@
 This script uses InsightFace buffalo_l for simple 1:N face search. Enter an image path, and the script searches the faces folder for the most similar face. A result is displayed only when the similarity score is at least 0.57.
 
 Install dependencies:
-pip install insightface onnxruntime opencv-python numpy
+pip install insightface onnxruntime-gpu opencv-python numpy
 
 Project structure:
 project/
@@ -19,10 +19,21 @@ project/
 import os
 import cv2
 import numpy as np
+import onnxruntime as ort
 from insightface.app import FaceAnalysis
+# Detect CUDA availability and use GPU when possible.
+available_providers = ort.get_available_providers()
+if "CUDAExecutionProvider" in available_providers:
+    providers = ["CUDAExecutionProvider", "CPUExecutionProvider"]
+    ctx_id = 0
+    print("Using GPU (CUDA)")
+else:
+    providers = ["CPUExecutionProvider"]
+    ctx_id = -1
+    print("CUDA is not available. Using CPU.")
 # Load the buffalo_l face detection and recognition model.
-app = FaceAnalysis(name="buffalo_l", providers=["CPUExecutionProvider"])
-app.prepare(ctx_id=-1, det_size=(640, 640))
+app = FaceAnalysis(name="buffalo_l", providers=providers)
+app.prepare(ctx_id=ctx_id, det_size=(640, 640))
 
 def get_embedding(image_path):
     # Detect the face and extract its normalized identity embedding.
