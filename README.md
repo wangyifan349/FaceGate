@@ -1,8 +1,8 @@
-# FaceGate
+# 👤 FaceGate
 
 FaceGate is a lightweight face recognition demo based on InsightFace `buffalo_l`. It includes two simple examples: face comparison for checking whether two images contain the same person, and face gate recognition for matching a camera face against registered employee images.
 
-## Deployment
+## 🚀 Deployment
 
 ```bash
 git clone https://github.com/wangyifan349/FaceGate.git
@@ -11,7 +11,7 @@ pip install insightface onnxruntime opencv-python numpy
 python3 face_gate.py
 ```
 
-## Face Comparison
+## 🔍 Face Comparison
 
 Face comparison extracts normalized face embeddings from two images and compares them with cosine similarity. It can be used for identity verification, account verification, or simple one-to-one face matching.
 
@@ -21,7 +21,6 @@ Minimal example:
 import cv2
 import numpy as np
 from insightface.app import FaceAnalysis
-
 app = FaceAnalysis(name="buffalo_l", providers=["CPUExecutionProvider"])
 app.prepare(ctx_id=-1, det_size=(640, 640))
 
@@ -31,14 +30,11 @@ face2 = app.get(cv2.imread("2.jpg"))[0]
 score = np.dot(face1.normed_embedding, face2.normed_embedding)
 print("Similarity:", float(score))
 ```
-
 Run:
-
 ```bash
 python3 face_compare.py
 ```
-
-## Face Gate
+## 🚪 Face Gate
 
 Face gate recognition loads registered employee images from the `faces` folder, detects faces from the camera, and finds the closest registered employee. It can be used as a simple prototype for employee recognition, attendance terminals, or access-control testing.
 
@@ -68,6 +64,7 @@ import cv2
 import numpy as np
 from datetime import datetime
 from insightface.app import FaceAnalysis
+
 face_analyzer = FaceAnalysis(name="buffalo_l", providers=["CPUExecutionProvider"])
 face_analyzer.prepare(ctx_id=-1, det_size=(640, 640))
 
@@ -85,7 +82,6 @@ def load_employee_embeddings():
         employee_embeddings[employee_name] = detected_faces[0].normed_embedding
     return employee_embeddings
 
-
 def find_best_match(face_embedding, employee_embeddings):
     best_name = "Unknown"
     best_score = 0.0
@@ -101,6 +97,7 @@ def find_best_match(face_embedding, employee_embeddings):
 
 employee_embeddings = load_employee_embeddings()
 camera = cv2.VideoCapture(0)
+
 while True:
     frame_received, frame = camera.read()
     if not frame_received:
@@ -134,9 +131,9 @@ while True:
     cv2.imshow("Face Gate", frame)
     if cv2.waitKey(1) == 27:
         break
+
 camera.release()
 cv2.destroyAllWindows()
-
 ```
 
 Run:
@@ -147,6 +144,22 @@ python3 face_gate.py
 
 Press `Esc` to exit.
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License. You are free to use, modify, distribute, and include it in commercial projects under the terms of the license.
+
+## ❤️ Sponsor
+
+If this project is helpful to you, any support is greatly appreciated. Thank you for supporting the project!
+
+**Bitcoin (BTC)**
+
+```text
+bc1qwfd0rrptzn4vyp2qj666crg8ky50px7e4yj5pg
+```
+
+**Litecoin (LTC)**
+
+```text
+ltc1qx60jqksl8pa38zmqjxau0vy04rqpjgfpn0xgw3
+```
